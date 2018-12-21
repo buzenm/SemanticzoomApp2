@@ -1,0 +1,77 @@
+﻿<Page
+    x:Class="SemanticzoomApp2.Views.PeopleListSemanticzoomPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SemanticzoomApp2.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:vm="using:SemanticzoomApp2.ViewModels"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.DataContext>
+        <vm:MyDatasViewModel/>
+    </Page.DataContext>
+    <Page.Resources>
+        <CollectionViewSource x:Name="CollectGroup"
+                              x:Key="groupPeople"
+                              Source="{Binding PeopleGroups}"
+                              IsSourceGrouped="True"
+                              ItemsPath="PeopleInfos"/>
+    </Page.Resources>
+    <Grid>
+        <SemanticZoom>
+            <SemanticZoom.ZoomedInView>
+                <GridView Name="myGrid" Margin="50,0,0,0"  ItemsSource="{Binding Source={StaticResource groupPeople}}">
+                    <GridView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Width="600">
+                                        <TextBlock Text="{Binding GroupTitle}" ></TextBlock>
+                                        <TextBlock Text=" - "></TextBlock>
+                                        <TextBlock Text="{Binding PeopleInfos.Count}" ></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+
+                            <GroupStyle.Panel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical"></StackPanel>
+                                </ItemsPanelTemplate>
+                            </GroupStyle.Panel>
+                        </GroupStyle>
+                    </GridView.GroupStyle>
+
+
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Width="900">
+                                <TextBlock Text="{Binding Name}"  Width="400"></TextBlock>
+                                <Border BorderBrush="Yellow" BorderThickness="2">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding PersonGender}" Width="400"></TextBlock>
+                                        <TextBlock Text="{Binding Discription}" Width="400"></TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </SemanticZoom.ZoomedInView>
+            <SemanticZoom.ZoomedOutView>
+                <GridView Margin="50,0,0,0" ItemsSource="{Binding Path=CollectionGroups, Source={StaticResource groupPeople}}">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Yellow" BorderThickness="2">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Group.GroupTitle}" FontSize="20" Width="400"></TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </SemanticZoom.ZoomedOutView>
+
+        </SemanticZoom>
+    </Grid>
+</Page>

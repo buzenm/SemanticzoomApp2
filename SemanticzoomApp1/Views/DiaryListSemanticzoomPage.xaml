@@ -1,0 +1,55 @@
+﻿<Page
+    x:Class="SemanticzoomApp1.Views.DiaryListSemanticzoomPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SemanticzoomApp1.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:vm="using:SemanticzoomApp1.ViewModels"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.DataContext>
+        <vm:DiaryListSemanticzoomViewModel/>
+    </Page.DataContext>
+    <Page.Resources>
+        <CollectionViewSource x:Key="CSV"
+                              IsSourceGrouped="True"
+                              Source="{Binding Groups}"
+                              ItemsPath="GroupItems"/>
+    </Page.Resources>
+    <Grid>
+        <SemanticZoom>
+            <SemanticZoom.ZoomedInView>
+                <ListView ItemsSource="{Binding Source={StaticResource CSV}}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Date}"/>
+                                <TextBlock Text="{Binding Weather}"/>
+                                <TextBlock Text="{Binding Content}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding GroupTitle}"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                </ListView>
+            </SemanticZoom.ZoomedInView>
+            <SemanticZoom.ZoomedOutView>
+                <ListView ItemsSource="{Binding Source={StaticResource CSV},Path=CollectionGroups}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Group.GroupTitle}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </SemanticZoom.ZoomedOutView>
+        </SemanticZoom>
+    </Grid>
+</Page>
